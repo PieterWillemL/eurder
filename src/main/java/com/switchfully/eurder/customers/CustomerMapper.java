@@ -13,7 +13,8 @@ public class CustomerMapper {
                 createCustomerDto.getFirstName(),
                 createCustomerDto.getLastName(),
                 createCustomerDto.getAddress(),
-                createCustomerDto.getPhoneNumber());
+                createCustomerDto.getPhoneNumber(),
+                createCustomerDto.getPassword());
     }
 
     public CustomerDto mapToCustomerDto(Customer customer){
