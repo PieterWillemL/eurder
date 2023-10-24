@@ -25,8 +25,6 @@ public class CustomerControllerTest {
     private CreateCustomerDto createCustomerDtoRegular;
     private String createCustomerDtoRegularString;
 
-
-
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
