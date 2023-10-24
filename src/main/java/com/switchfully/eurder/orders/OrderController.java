@@ -1,8 +1,7 @@
-package com.switchfully.eurder.order;
+package com.switchfully.eurder.orders;
 
-import com.switchfully.eurder.order.dtos.ItemGroupDto;
-import com.switchfully.eurder.order.dtos.NewItemGroupDto;
-import com.switchfully.eurder.order.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.security.Role;
 import com.switchfully.eurder.security.SecurityService;
 import org.springframework.http.HttpStatus;

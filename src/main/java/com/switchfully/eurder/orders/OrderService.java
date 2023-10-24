@@ -1,11 +1,11 @@
-package com.switchfully.eurder.order;
+package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.customers.Customer;
 import com.switchfully.eurder.customers.CustomerService;
 import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.items.ItemService;
-import com.switchfully.eurder.order.dtos.NewItemGroupDto;
-import com.switchfully.eurder.order.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,12 +35,20 @@ public class OrderService {
                 .map(this::calculateShippingDate)
                 .map(this::setCurrentUnitPrice)
                 .toList();
-        return orderMapper.mapToOrderDto(orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customer)));
+        Order placedOrder = orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customer));
+        placedOrder.setTotalPrice(calculateTotalPrice(placedOrder));
+        return orderMapper.mapToOrderDto(placedOrder);
     }
 
-    private ItemGroup calculateShippingDate(ItemGroup itemGroup){
+    private double calculateTotalPrice(Order order) {
+        return order.getItemGroupList().stream()
+                .mapToDouble(itemGroup -> itemGroup.getPricePerUnit() * itemGroup.getAmount())
+                .sum();
+    }
+
+    private ItemGroup calculateShippingDate(ItemGroup itemGroup) {
         Item item = itemService.getItemByItemName(itemGroup.getItemName());
-        if(itemGroup.getAmount() <= item.getAmount()){
+        if (itemGroup.getAmount() <= item.getAmount()) {
             itemGroup.setShippingDate(LocalDate.now().plusDays(DAYS_UNTIL_SHIPPING_WHEN_IN_STOCK));
         } else {
             itemGroup.setShippingDate(LocalDate.now().plusDays(DAYS_UNTIL_SHIPPING_WHEN_NOT_IN_STOCK));
@@ -48,7 +56,7 @@ public class OrderService {
         return itemGroup;
     }
 
-    private ItemGroup setCurrentUnitPrice(ItemGroup itemGroup){
+    private ItemGroup setCurrentUnitPrice(ItemGroup itemGroup) {
         Item item = itemService.getItemByItemName(itemGroup.getItemName());
         itemGroup.setPricePerUnit(item.getPrice());
         return itemGroup;

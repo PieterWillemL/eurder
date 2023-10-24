@@ -1,9 +1,9 @@
-package com.switchfully.eurder.order;
+package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.customers.Customer;
-import com.switchfully.eurder.order.dtos.ItemGroupDto;
-import com.switchfully.eurder.order.dtos.NewItemGroupDto;
-import com.switchfully.eurder.order.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.ItemGroupDto;
+import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

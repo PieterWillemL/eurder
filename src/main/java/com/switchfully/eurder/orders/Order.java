@@ -1,17 +1,17 @@
-package com.switchfully.eurder.order;
+package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.customers.Customer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Order {
 
-    private String orderId;
-    private Customer customer;
-    private List<ItemGroup> itemGroupList;
+    private final String orderId;
+    private final Customer customer;
+    private final List<ItemGroup> itemGroupList;
+    private double totalPrice;
 
     public Order(Customer customer, List<ItemGroup> itemGroupList) {
         orderId = UUID.randomUUID().toString();
@@ -29,6 +29,14 @@ public class Order {
 
     public List<ItemGroup> getItemGroupList() {
         return itemGroupList;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override

@@ -1,6 +1,4 @@
-package com.switchfully.eurder.order;
-
-import com.switchfully.eurder.items.Item;
+package com.switchfully.eurder.orders;
 
 import java.time.LocalDate;
 import java.util.Objects;

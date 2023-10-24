@@ -1,6 +1,4 @@
-package com.switchfully.eurder.order.dtos;
-
-import com.switchfully.eurder.items.Item;
+package com.switchfully.eurder.orders.dtos;
 
 import java.util.Objects;
 
@@ -13,7 +11,7 @@ public class NewItemGroupDto {
         return itemName;
     }
 
-    public NewItemGroupDto setItem(String itemName) {
+    public NewItemGroupDto setItemName(String itemName) {
         this.itemName = itemName;
         return this;
     }

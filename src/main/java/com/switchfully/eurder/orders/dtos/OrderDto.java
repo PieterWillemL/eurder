@@ -1,4 +1,4 @@
-package com.switchfully.eurder.order.dtos;
+package com.switchfully.eurder.orders.dtos;
 
 import com.switchfully.eurder.customers.Customer;
 
@@ -10,6 +10,8 @@ public class OrderDto {
     private String id;
     private Customer customer;
     private List<ItemGroupDto> itemGroupDtoList;
+
+    private double totalPrice;
 
     public String getId() {
         return id;
@@ -38,16 +40,25 @@ public class OrderDto {
         return this;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public OrderDto setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderDto orderDto = (OrderDto) o;
-        return Objects.equals(id, orderDto.id) && Objects.equals(customer, orderDto.customer) && Objects.equals(itemGroupDtoList, orderDto.itemGroupDtoList);
+        return Double.compare(totalPrice, orderDto.totalPrice) == 0 && Objects.equals(id, orderDto.id) && Objects.equals(customer, orderDto.customer) && Objects.equals(itemGroupDtoList, orderDto.itemGroupDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customer, itemGroupDtoList);
+        return Objects.hash(id, customer, itemGroupDtoList, totalPrice);
     }
 }
