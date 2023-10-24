@@ -1,5 +1,7 @@
 package com.switchfully.eurder.customers.dtos;
 
+import java.util.Objects;
+
 public class CreateCustomerDto {
 
     private String email;
@@ -66,5 +68,18 @@ public class CreateCustomerDto {
     public CreateCustomerDto setPassword(String password) {
         this.password = password;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateCustomerDto that = (CreateCustomerDto) o;
+        return Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, firstName, lastName, address, phoneNumber, password);
     }
 }
