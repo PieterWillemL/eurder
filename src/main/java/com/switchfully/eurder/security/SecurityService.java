@@ -46,7 +46,7 @@ public class SecurityService {
             }
         }
     }
-    private UsernamePassword getUsernamePassword(String authorization) {
+    public UsernamePassword getUsernamePassword(String authorization) {
         String decodedUsernameAndPassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
         String username = decodedUsernameAndPassword.substring(0, decodedUsernameAndPassword.indexOf(":"));
         String password = decodedUsernameAndPassword.substring(decodedUsernameAndPassword.indexOf(":") + 1);

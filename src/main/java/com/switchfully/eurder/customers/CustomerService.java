@@ -14,6 +14,11 @@ public class CustomerService {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
+
+    public Customer getCustomerByEmail(String customerEmail) {
+        return customerRepository.getCustomerByEmail(customerEmail);
+    }
+
     public CustomerDto createCustomerAccount(CreateCustomerDto createCustomerDto) {
         return customerMapper.mapToCustomerDto(customerRepository.createCustomerAccount(customerMapper.mapToCustomer(createCustomerDto)));
     }

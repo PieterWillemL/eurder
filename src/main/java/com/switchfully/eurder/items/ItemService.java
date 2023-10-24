@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ItemService {
 
-    private ItemRepository itemRepository;
-    private ItemMapper itemMapper;
+    private final ItemRepository itemRepository;
+    private final ItemMapper itemMapper;
 
     public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
@@ -16,5 +16,9 @@ public class ItemService {
 
     public ItemDto addNewItem(ItemDto itemDto) {
         return itemMapper.mapToItemDto(itemRepository.addNewItem(itemMapper.mapToItem(itemDto)));
+    }
+
+    public Item getItemByItemName(String itemName) {
+        return itemRepository.getItemByItemName(itemName);
     }
 }

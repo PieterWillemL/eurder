@@ -1,6 +1,7 @@
 package com.switchfully.eurder.items;
 
 import com.switchfully.eurder.exceptions.ItemAlreadyInDatabaseException;
+import com.switchfully.eurder.exceptions.ItemNotInDatabaseException;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -15,5 +16,12 @@ public class ItemRepository {
         }
         items.put(item.getName(), item);
         return item;
+    }
+
+    public Item getItemByItemName(String itemName) {
+        if(!items.containsKey(itemName)){
+            throw new ItemNotInDatabaseException(itemName);
+        }
+        return items.get(itemName);
     }
 }

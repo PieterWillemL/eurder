@@ -1,6 +1,7 @@
 package com.switchfully.eurder.customers;
 
 import com.switchfully.eurder.exceptions.EmailAlreadyInDatabaseException;
+import com.switchfully.eurder.exceptions.InvalidCustomerEmailException;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -21,5 +22,12 @@ public class CustomerRepository {
 
     public HashMap<String, Customer> getCustomers() {
         return customers;
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        if(!customers.containsKey(email)){
+            throw new InvalidCustomerEmailException();
+        }
+        return customers.get(email);
     }
 }
