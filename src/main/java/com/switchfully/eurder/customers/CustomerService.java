@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-
     private final CustomerMapper customerMapper;
 
     public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper){

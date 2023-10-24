@@ -9,7 +9,6 @@ public class Customer {
     private final String lastName;
     private final String address;
     private final String phoneNumber;
-
     private final String password;
 
     public Customer(String email, String firstName, String lastName, String address, String phoneNumber, String password) {
@@ -44,6 +43,7 @@ public class Customer {
     public String getPassword() {
         return password;
     }
+
 
     @Override
     public boolean equals(Object o) {

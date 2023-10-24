@@ -18,4 +18,8 @@ public class CustomerRepository {
         customers.put(customer.getEmail(), customer);
         return customer;
     }
+
+    public HashMap<String, Customer> getCustomers() {
+        return customers;
+    }
 }
