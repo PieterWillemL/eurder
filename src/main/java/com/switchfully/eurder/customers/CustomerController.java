@@ -1,5 +1,6 @@
 package com.switchfully.eurder.customers;
 
+import com.switchfully.eurder.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.customers.dtos.CustomerDto;
 import com.switchfully.eurder.security.SecurityService;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class CustomerController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto createCustomerAccount(@RequestBody CustomerDto customerDto){
-        return customerService.createCustomerAccount(customerDto);
+    public CustomerDto createCustomerAccount(@RequestBody CreateCustomerDto createCustomerDto){
+        return customerService.createCustomerAccount(createCustomerDto);
     }
 
 }

@@ -4,9 +4,7 @@ public class CustomerDto {
 
     private String email;
 
-    private String firstName;
-
-    private String lastName;
+    private String name;
 
     private String address;
 
@@ -21,21 +19,14 @@ public class CustomerDto {
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
+
+
+    public String getName() {
+        return name;
     }
 
-    public CustomerDto setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public CustomerDto setLastName(String lastName) {
-        this.lastName = lastName;
+    public CustomerDto setName(String name) {
+        this.name = name;
         return this;
     }
 
