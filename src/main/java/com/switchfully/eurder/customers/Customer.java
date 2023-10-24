@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Customer {
 
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String phoneNumber;
+    private final String email;
+    private final String firstName;
+    private final String lastName;
+    private final String address;
+    private final String phoneNumber;
 
-    private String password;
+    private final String password;
 
     public Customer(String email, String firstName, String lastName, String address, String phoneNumber, String password) {
         this.email = email;
