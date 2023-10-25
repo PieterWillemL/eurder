@@ -10,43 +10,29 @@ public class OrderDto {
     private String id;
     private Customer customer;
     private List<ItemGroupDto> itemGroupDtoList;
-
     private double totalPrice;
+
+    public OrderDto(String id, Customer customer, List<ItemGroupDto> itemGroupDtoList, double totalPrice) {
+        this.id = id;
+        this.customer = customer;
+        this.itemGroupDtoList = itemGroupDtoList;
+        this.totalPrice = totalPrice;
+    }
 
     public String getId() {
         return id;
-    }
-
-    public OrderDto setId(String id) {
-        this.id = id;
-        return this;
     }
 
     public Customer getCustomer() {
         return customer;
     }
 
-    public OrderDto setCustomer(Customer customer) {
-        this.customer = customer;
-        return this;
-    }
-
     public List<ItemGroupDto> getItemGroupDtoList() {
         return itemGroupDtoList;
     }
 
-    public OrderDto setItemGroupDtoList(List<ItemGroupDto> itemGroupDtoList) {
-        this.itemGroupDtoList = itemGroupDtoList;
-        return this;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
-    }
-
-    public OrderDto setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-        return this;
     }
 
     @Override

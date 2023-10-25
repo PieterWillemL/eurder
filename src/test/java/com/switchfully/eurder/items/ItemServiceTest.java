@@ -12,22 +12,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceTest {
 
-    private ItemService itemService;
     private final ItemMapper itemMapper = new ItemMapper();
-
+    private ItemService itemService;
     @Mock
     private ItemRepository itemRepository;
 
     private ItemDto itemDtoRegular;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         itemService = new ItemService(itemRepository, itemMapper);
-        itemDtoRegular = new ItemDto()
-                .setName("Name")
-                .setPrice(2.5)
-                .setAmount(10)
-                .setDescription("Description of this item");
+        itemDtoRegular = new ItemDto("Name", 2.5, 10, "Description of this item");
     }
 
     @Test
@@ -40,3 +35,4 @@ public class ItemServiceTest {
                 .isEqualTo(itemDtoRegular);
     }
 }
+

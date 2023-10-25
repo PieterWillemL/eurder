@@ -4,46 +4,34 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class ItemGroupDto {
-    private String itemName;
-    private int amount;
-    private double pricePerUnit;
-    private LocalDate shippingDate;
+    private final String itemName;
+    private final int amount;
+    private final double pricePerUnit;
+    private final LocalDate shippingDate;
+
+    public ItemGroupDto(String itemName, int amount, double pricePerUnit, LocalDate shippingDate) {
+        this.itemName = itemName;
+        this.amount = amount;
+        this.pricePerUnit = pricePerUnit;
+        this.shippingDate = shippingDate;
+    }
 
     public String getItemName() {
         return itemName;
-    }
-
-    public ItemGroupDto setItemName(String itemName) {
-        this.itemName = itemName;
-        return this;
     }
 
     public int getAmount() {
         return amount;
     }
 
-    public ItemGroupDto setAmount(int amount) {
-        this.amount = amount;
-        return this;
-    }
-
     public double getPricePerUnit() {
         return pricePerUnit;
-    }
-
-    public ItemGroupDto setPricePerUnit(double pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
-        return this;
     }
 
     public LocalDate getShippingDate() {
         return shippingDate;
     }
 
-    public ItemGroupDto setShippingDate(LocalDate shippingDate) {
-        this.shippingDate = shippingDate;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

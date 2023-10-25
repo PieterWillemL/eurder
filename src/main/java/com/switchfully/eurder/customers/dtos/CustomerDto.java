@@ -4,50 +4,33 @@ import java.util.Objects;
 
 public class CustomerDto {
 
-    private String email;
+    private final String email;
 
-    private String name;
+    private final String name;
 
-    private String address;
+    private final String address;
 
-    private String phoneNumber;
+    private final String phoneNumber;
+
+    public CustomerDto(String email, String name, String address, String phoneNumber) {
+        this.email = email;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getEmail() {
         return email;
     }
 
-    public CustomerDto setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-
-
     public String getName() {
         return name;
     }
-
-    public CustomerDto setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getAddress() {
         return address;
     }
-
-    public CustomerDto setAddress(String address) {
-        this.address = address;
-        return this;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public CustomerDto setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
     }
 
     @Override

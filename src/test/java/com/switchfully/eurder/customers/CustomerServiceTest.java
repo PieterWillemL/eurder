@@ -23,19 +23,11 @@ public class CustomerServiceTest {
     @BeforeEach
     void setup(){
         customerService = new CustomerService(customerRepository, customerMapper);
-        customerDtoRegular = new CustomerDto()
-                .setEmail("first@email.com")
-                .setName("firstname lastname")
-                .setAddress("street 1, City")
-                .setPhoneNumber("+32490123456");
+        customerDtoRegular = new CustomerDto("first@email.com", "firstname lastname", "street 1, City", "+32490123456");
 
-        createCustomerDtoRegular = new CreateCustomerDto()
-                .setEmail("first@email.com")
-                .setFirstName("firstname")
-                .setLastName("lastname")
-                .setAddress("street 1, City")
-                .setPhoneNumber("+32490123456")
-                .setPassword("password");
+        createCustomerDtoRegular = new CreateCustomerDto("first@email.com", "firstname", "lastname", "street 1, City", "+32490123456", "password");
+
+
     }
 
     @Test

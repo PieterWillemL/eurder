@@ -18,10 +18,10 @@ public class CustomerMapper {
     }
 
     public CustomerDto mapToCustomerDto(Customer customer){
-        return new CustomerDto()
-                .setEmail(customer.getEmail())
-                .setName(customer.getFirstName() + " " + customer.getLastName())
-                .setAddress(customer.getAddress())
-                .setPhoneNumber(customer.getPhoneNumber());
+        return new CustomerDto(
+                customer.getEmail(),
+                customer.getFirstName() + " " + customer.getLastName(),
+                customer.getAddress(),
+                customer.getPhoneNumber());
     }
 }

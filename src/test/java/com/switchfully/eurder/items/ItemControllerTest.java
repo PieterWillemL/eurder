@@ -33,11 +33,7 @@ public class ItemControllerTest {
 
     @BeforeEach
     void setup() throws Exception {
-        itemDtoRegular = new ItemDto()
-                .setName("Name")
-                .setPrice(2.5)
-                .setAmount(10)
-                .setDescription("Description of this item");
+        itemDtoRegular = new ItemDto("Name", 2.5, 10, "Description of this item");
 
         itemDtoRegularString = objectMapper.writeValueAsString(itemDtoRegular);
     }

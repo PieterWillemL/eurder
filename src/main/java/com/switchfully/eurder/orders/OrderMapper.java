@@ -26,18 +26,11 @@ public class OrderMapper {
                 .stream()
                 .map(this::mapToItemGroupDto)
                 .toList();
-        return new OrderDto()
-                .setId(order.getOrderId())
-                .setCustomer(order.getCustomer())
-                .setItemGroupDtoList(itemGroupDtoList);
+        return new OrderDto(order.getOrderId(), order.getCustomer(), itemGroupDtoList, order.getTotalPrice());
 
     }
 
     public ItemGroupDto mapToItemGroupDto(ItemGroup itemGroup){
-        return new ItemGroupDto()
-                .setItemName(itemGroup.getItemName())
-                .setPricePerUnit(itemGroup.getPricePerUnit())
-                .setAmount(itemGroup.getAmount())
-                .setShippingDate(itemGroup.getShippingDate());
+        return new ItemGroupDto(itemGroup.getItemName(), itemGroup.getAmount(), itemGroup.getPricePerUnit(), itemGroup.getShippingDate());
     }
 }

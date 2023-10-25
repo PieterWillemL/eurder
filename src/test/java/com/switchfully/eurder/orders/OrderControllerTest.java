@@ -44,17 +44,10 @@ public class OrderControllerTest {
 
     @BeforeEach
     void setup() throws Exception{
-        newItemGroupDto1 = new NewItemGroupDto()
-                .setItemName("Wooden Desk")
-                .setAmount(1);
-        newItemGroupDto2 = new NewItemGroupDto()
-                .setItemName("Coffee Mug")
-                .setAmount(25);
+        newItemGroupDto1 = new NewItemGroupDto("Wooden Desk", 1);
+        newItemGroupDto2 = new NewItemGroupDto("Coffee Mug", 25);
         newItemGroupDtoListString = objectMapper.writeValueAsString(List.of(newItemGroupDto1, newItemGroupDto2));
-        orderDto = new OrderDto()
-                .setId("mockId")
-                .setCustomer(new Customer("a", "b", "c", "d", "e", "password"))
-                .setTotalPrice(120.5);
+        orderDto = new OrderDto("mockId", new Customer("a", "b", "c", "d", "e", "password"), null, 120.5);
         orderDtoString = objectMapper.writeValueAsString(orderDto);
 
     }

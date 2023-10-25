@@ -4,26 +4,23 @@ import java.util.Objects;
 
 public class NewItemGroupDto {
 
-    private String itemName;
-    private int amount;
+    private final String itemName;
+    private final int amount;
+
+    public NewItemGroupDto(String itemName, int amount) {
+        this.itemName = itemName;
+        this.amount = amount;
+    }
 
     public String getItemName() {
         return itemName;
     }
 
-    public NewItemGroupDto setItemName(String itemName) {
-        this.itemName = itemName;
-        return this;
-    }
 
     public int getAmount() {
         return amount;
     }
 
-    public NewItemGroupDto setAmount(int amount) {
-        this.amount = amount;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {
