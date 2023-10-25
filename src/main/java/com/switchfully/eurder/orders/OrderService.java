@@ -7,6 +7,7 @@ import com.switchfully.eurder.items.ItemService;
 import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.dtos.OrderReportDto;
+import com.switchfully.eurder.orders.dtos.ShippingTodayDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -85,5 +86,10 @@ public class OrderService {
         if(!orderToReorder.getCustomerEmail().equals(customerEmail)){
             throw new OrderNotOfThisCustomerException(orderId, customerEmail);
         }
+    }
+
+    public ShippingTodayDto getItemsShippingToday() {
+        List<Order> ordersWithItemToShipToday = orderRepository.getAllOrdersThatContainAnItemToShipToday();
+        return orderMapper.mapToShippingTodayDto(ordersWithItemToShipToday, customerService);
     }
 }

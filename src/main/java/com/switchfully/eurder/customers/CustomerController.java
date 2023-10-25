@@ -34,4 +34,11 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
+    @GetMapping("{customerEmail}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto getCustomerByEmail(@RequestHeader String authorization, @PathVariable String customerEmail){
+        securityService.validateAuthorization(authorization, Role.ADMIN);
+        return customerService.getCustomerByEmail(customerEmail);
+    }
+
 }

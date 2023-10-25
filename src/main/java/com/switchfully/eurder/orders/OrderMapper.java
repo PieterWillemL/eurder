@@ -1,9 +1,12 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.customers.Customer;
+import com.switchfully.eurder.customers.CustomerService;
 import com.switchfully.eurder.orders.dtos.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -55,5 +58,36 @@ public class OrderMapper {
 
     public NewItemGroupDto mapToNewItemGroupDto(ItemGroup itemGroup) {
         return new NewItemGroupDto(itemGroup.getItemName(), itemGroup.getAmount());
+    }
+
+    public ShippingTodayDto mapToShippingTodayDto(List<Order> ordersWithItemToShipToday, CustomerService customerService) {
+        HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress = new HashMap<>();
+        ordersWithItemToShipToday.stream()
+                .map(order -> itemsByAddress.containsKey(getAddress(customerService, order))?
+                        itemsByAddress.put(getAddress(customerService, order), appendList(itemsByAddress, customerService, order)):
+                        itemsByAddress.put(getAddress(customerService, order), getItemGroupDtoForShippingTodayList(order))
+                        );
+        return new ShippingTodayDto(itemsByAddress);
+    }
+
+    private List<ItemGroupDtoForShippingToday> appendList(HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress, CustomerService customerService, Order order){
+        List<ItemGroupDtoForShippingToday> listToReturn = itemsByAddress.get(getAddress(customerService, order));
+        listToReturn.addAll(getItemGroupDtoForShippingTodayList(order));
+        return listToReturn;
+    }
+
+    private static String getAddress(CustomerService customerService, Order order) {
+        return customerService.getCustomerByEmail(order.getCustomerEmail()).getAddress();
+    }
+
+    private List<ItemGroupDtoForShippingToday> getItemGroupDtoForShippingTodayList(Order order){
+        return order.getItemGroupList().stream()
+                .filter(itemGroup -> itemGroup.getShippingDate().equals(LocalDate.now()))
+                .map(this::mapToItemGroupDtoForShippingToday)
+                .toList();
+    }
+
+    public ItemGroupDtoForShippingToday mapToItemGroupDtoForShippingToday(ItemGroup itemGroup){
+        return new ItemGroupDtoForShippingToday(itemGroup.getItemName(), itemGroup.getAmount());
     }
 }

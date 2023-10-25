@@ -17,8 +17,8 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public Customer getCustomerByEmail(String customerEmail) {
-        return customerRepository.getCustomerByEmail(customerEmail);
+    public CustomerDto getCustomerByEmail(String customerEmail) {
+        return customerMapper.mapToCustomerDto(customerRepository.getCustomerByEmail(customerEmail));
     }
 
     public CustomerDto createCustomerAccount(CreateCustomerDto createCustomerDto) {

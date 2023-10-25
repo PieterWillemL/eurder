@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
@@ -38,5 +41,16 @@ public class CustomerServiceTest {
 
         Assertions.assertThat(customerService.createCustomerAccount(createCustomerDtoRegular))
                 .isEqualTo(customerDtoRegular);
+    }
+
+    @Test
+    void getAllCustomers_thenReturnsCorrectListOfCustomerDtos(){
+        HashMap<String, Customer> mockCustomers = new HashMap<>();
+        mockCustomers.put("first@email.com", new Customer("first@email.com", "firstname","lastname", "street 1, City", "+32490123456", "password"));
+        Mockito.when(customerRepository.getCustomers())
+                .thenReturn(mockCustomers);
+
+        Assertions.assertThat(customerService.getAllCustomers())
+                .isEqualTo(List.of(customerDtoRegular));
     }
 }
