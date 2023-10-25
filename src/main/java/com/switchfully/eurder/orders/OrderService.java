@@ -1,11 +1,12 @@
 package com.switchfully.eurder.orders;
 
-import com.switchfully.eurder.customers.Customer;
 import com.switchfully.eurder.customers.CustomerService;
+import com.switchfully.eurder.exceptions.OrderNotOfThisCustomerException;
 import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.items.ItemService;
 import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.OrderReportDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,11 +37,11 @@ public class OrderService {
                 .map(this::setCurrentUnitPrice)
                 .toList();
         Order placedOrder = orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customerEmail));
-        placedOrder.setTotalPrice(calculateTotalPrice(placedOrder));
+        placedOrder.setTotalPrice(calculateTotalPriceOfOneOrder(placedOrder));
         return orderMapper.mapToOrderDto(placedOrder);
     }
 
-    private double calculateTotalPrice(Order order) {
+    private double calculateTotalPriceOfOneOrder(Order order) {
         return order.getItemGroupList().stream()
                 .mapToDouble(itemGroup -> itemGroup.getPricePerUnit() * itemGroup.getAmount())
                 .sum();
@@ -60,5 +61,29 @@ public class OrderService {
         Item item = itemService.getItemByItemName(itemGroup.getItemName());
         itemGroup.setPricePerUnit(item.getPrice());
         return itemGroup;
+    }
+
+    public OrderReportDto getOrderReport(String customerEmail) {
+        List<Order> customerOrders = orderRepository.getOrdersByCustomerEmail(customerEmail);
+        Double totalPrice = customerOrders.stream()
+                .mapToDouble(Order::getTotalPrice)
+                .sum();
+        return orderMapper.mapToOrderReportDto(customerOrders, totalPrice);
+    }
+
+    public OrderDto reorderExistingOrder(String customerEmail, String orderId) {
+        Order orderToReorder = orderRepository.getOrderById(orderId);
+        validateOrderByThisCustomer(customerEmail, orderId, orderToReorder);
+        List<NewItemGroupDto> newItemGroupDtoList = orderToReorder.getItemGroupList().stream()
+                .map(orderMapper::mapToNewItemGroupDto)
+                .toList();
+
+        return placeNewOrder(newItemGroupDtoList, customerEmail);
+    }
+
+    private static void validateOrderByThisCustomer(String customerEmail, String orderId, Order orderToReorder) {
+        if(!orderToReorder.getCustomerEmail().equals(customerEmail)){
+            throw new OrderNotOfThisCustomerException(orderId, customerEmail);
+        }
     }
 }

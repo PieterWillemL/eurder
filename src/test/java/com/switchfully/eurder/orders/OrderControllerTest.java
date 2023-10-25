@@ -3,8 +3,7 @@ package com.switchfully.eurder.orders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.switchfully.eurder.customers.Customer;
 import com.switchfully.eurder.items.dtos.ItemDto;
-import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
-import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.*;
 import com.switchfully.eurder.security.SecurityService;
 import com.switchfully.eurder.security.UsernamePassword;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,5 +64,21 @@ public class OrderControllerTest {
                 .content(newItemGroupDtoListString))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(orderDtoString));
+    }
+
+    @Test
+    void getOrderReport_givenValidAuthorization_thenReturnsHttpStatusOkAndCorrectReturnType() throws Exception{
+        OrderReportDto testOrderReportDto = new OrderReportDto(List.of(new SingleOrderForReportDto("id", List.of(new ItemGroupForOrderReportDto("Coffee", 2, 20.20)), 20.20)), 20.20);
+        String testOrderReportDtoString = objectMapper.writeValueAsString(testOrderReportDto);
+        Mockito.when(securityService.getUsernamePassword(""))
+                .thenReturn(new UsernamePassword("mockCustomerEmail", "password"));
+        Mockito.when(orderService.getOrderReport("mockCustomerEmail"))
+                .thenReturn(testOrderReportDto);
+
+        mockMvc.perform(get("http://localhost:8080/eurder/orders")
+                .header(authorization, ""))
+                .andExpect(status().isOk())
+                .andExpect(content().json(testOrderReportDtoString));
+
     }
 }

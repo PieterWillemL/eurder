@@ -12,7 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,7 +41,8 @@ public class ItemControllerTest {
 
     @Test
     void addNewItem_givenValidInput_thenReturnsHttpStatusCreatedAndCorrectReturnType() throws Exception {
-        Mockito.when(itemService.addNewItem(itemDtoRegular)).thenReturn(itemDtoRegular);
+        Mockito.when(itemService.addNewItem(itemDtoRegular))
+                .thenReturn(itemDtoRegular);
 
         mockMvc.perform(post("http://localhost:8080/eurder/items")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -49,6 +51,19 @@ public class ItemControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(itemDtoRegularString));
 
+    }
+
+    @Test
+    void updateItem_thenReturnsHttpStatusAcceptedAndCorrectReturnType() throws Exception {
+        Mockito.when(itemService.updateItem("mockName", itemDtoRegular))
+                .thenReturn(itemDtoRegular);
+
+        mockMvc.perform(put("http://localhost:8080/eurder/items/mockName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(authorization, "")
+                        .content(itemDtoRegularString))
+                .andExpect(status().isAccepted())
+                .andExpect(content().json(itemDtoRegularString));
     }
 
 }

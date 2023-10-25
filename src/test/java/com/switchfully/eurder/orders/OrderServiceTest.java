@@ -3,9 +3,7 @@ package com.switchfully.eurder.orders;
 import com.switchfully.eurder.customers.CustomerService;
 import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.items.ItemService;
-import com.switchfully.eurder.orders.dtos.ItemGroupDto;
-import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
-import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.orders.dtos.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -118,5 +116,43 @@ public class OrderServiceTest {
                     .isEqualTo(Optional.of(LocalDate.now().plusDays(7)));
 
         }
+    }
+
+    @Test
+    void getOrderReport_givenValidCustomerEmail_thenReturnsOrderReportDtoWithCorrectTotalPrice(){
+        List<ItemGroup> itemGroupList1 = List.of(
+                new ItemGroup("item", 2, 2.50, LocalDate.now()),
+                new ItemGroup("item2", 1, 3.40, LocalDate.now()));
+        List<ItemGroup> itemGroupList2 = List.of(
+                new ItemGroup("item3", 4, 1.10, LocalDate.now()));
+        Order order1 = new Order("mockCustomerEmail", itemGroupList1);
+        order1.setTotalPrice(8.40);
+        Order order2 = new Order("mockCustomerEmail", itemGroupList2);
+        order2.setTotalPrice(4.40);
+        List<Order> mockCustomerOrders = List.of(order1, order2);
+
+        Mockito.when(orderRepository.getOrdersByCustomerEmail("mockCustomerEmail"))
+                .thenReturn(mockCustomerOrders);
+
+        OrderReportDto expectedReturnValue = getOrderReportDto(order1, order2);
+
+        OrderReportDto actualReturnValue = orderService.getOrderReport("mockCustomerEmail");
+
+        Assertions.assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
+    }
+
+    private static OrderReportDto getOrderReportDto(Order order1, Order order2) {
+        ItemGroupForOrderReportDto itemGroupForOrderReportDto1 = new ItemGroupForOrderReportDto("item", 2, 5.00);
+        ItemGroupForOrderReportDto itemGroupForOrderReportDto2 = new ItemGroupForOrderReportDto("item2", 1, 3.40);
+        ItemGroupForOrderReportDto itemGroupForOrderReportDto3 = new ItemGroupForOrderReportDto("item3", 4, 4.40);
+        SingleOrderForReportDto singleOrderForReportDto1 = new SingleOrderForReportDto(
+                order1.getOrderId(),
+                List.of(itemGroupForOrderReportDto1, itemGroupForOrderReportDto2),
+                8.40);
+        SingleOrderForReportDto singleOrderForReportDto2 = new SingleOrderForReportDto(
+                order2.getOrderId(),
+                List.of(itemGroupForOrderReportDto3),
+                4.40);
+        return new OrderReportDto(List.of(singleOrderForReportDto1, singleOrderForReportDto2), 12.80);
     }
 }

@@ -24,4 +24,13 @@ public class OrderRepositoryTest {
         Assertions.assertThat(orderRepository.placeNewOrder(orderToTest))
                 .isEqualTo(orderToTest);
     }
+
+    @Test
+    void getOrdersByCustomerEmail_givenValidCustomerEmail_thenReturnsListOfThisCustomersOrders(){
+        orderRepository.placeNewOrder(orderToTest);
+        orderRepository.placeNewOrder(new Order("otherMockEmail", List.of(new ItemGroup("mockItem2", 2, 3.5, LocalDate.now()))));
+
+        Assertions.assertThat(orderRepository.getOrdersByCustomerEmail("mockEmail"))
+                .isEqualTo(List.of(orderToTest));
+    }
 }

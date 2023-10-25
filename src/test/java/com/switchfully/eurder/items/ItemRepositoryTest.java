@@ -1,6 +1,7 @@
 package com.switchfully.eurder.items;
 
 import com.switchfully.eurder.exceptions.ItemAlreadyInDatabaseException;
+import com.switchfully.eurder.exceptions.ItemNotInDatabaseException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +36,48 @@ public class ItemRepositoryTest {
             Assertions.assertThatThrownBy(()->itemRepository.addNewItem(itemWithSameName))
                     .isInstanceOf(ItemAlreadyInDatabaseException.class)
                     .hasMessage("Our database already contains following item:\n" + itemWithSameName);
+        }
+    }
+
+    @Test
+    void givenItemWithNameNotInDatabase_thenThrowsItemNotInDatabaseException(){
+        Assertions.assertThatThrownBy(()-> itemRepository.getItemByItemName("NameNotInDatabase"))
+                .isInstanceOf(ItemNotInDatabaseException.class)
+                .hasMessage("The following item is not present in our database: NameNotInDatabase");
+    }
+
+    @Nested
+    @DisplayName("Update Item")
+    class updateItem{
+        @BeforeEach
+        void setup(){
+            itemRepository.addNewItem(itemToTest);
+        }
+        @Test
+        void givenValidItemNameAndUpdatedItem_thenReturnsThatUpdatedItem(){
+
+            Item updatedItem = new Item("Name", 2.2, 3, "description");
+
+            Assertions.assertThat(itemRepository.updateItem("Name", updatedItem))
+                    .isEqualTo(updatedItem);
+
+        }
+        @Test
+        void givenUpdatedItemNameSameAsItemName_thenItemsContainsUpdatedItem(){
+            Item updatedItem = new Item("Name", 2.2, 3, "description");
+
+            itemRepository.updateItem("Name", updatedItem);
+
+            Assertions.assertThat(itemRepository.getItems().values()).contains(updatedItem);
+        }
+
+        @Test
+        void givenUpdatedItemNameDifferentThanItemName_thenItemsKeysNoLongerContainsItemName(){
+            Item updatedItem = new Item("New Name", 2.2, 3, "description");
+
+            itemRepository.updateItem("Name", updatedItem);
+
+            Assertions.assertThat(itemRepository.getItems().containsKey("Name")).isFalse();
         }
     }
 }

@@ -33,4 +33,8 @@ public class ItemRepository {
         }
         return updatedItem;
     }
+
+    public HashMap<String, Item> getItems() {
+        return items;
+    }
 }
