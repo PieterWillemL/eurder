@@ -81,4 +81,17 @@ public class OrderControllerTest {
                 .andExpect(content().json(testOrderReportDtoString));
 
     }
+
+    @Test
+    void reorderExistingOrder_givenValidAuthorization_thenReturnsHttpStatusCreatedAndCorrectReturnType() throws Exception{
+        Mockito.when(securityService.getUsernamePassword(""))
+                .thenReturn(new UsernamePassword("mockCustomerEmail", "password"));
+        Mockito.when(orderService.reorderExistingOrder("mockCustomerEmail", "mockId"))
+                .thenReturn(orderDto);
+
+        mockMvc.perform(post("http://localhost:8080/eurder/orders/reorder/mockId")
+                .header(authorization, ""))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(orderDtoString));
+    }
 }
