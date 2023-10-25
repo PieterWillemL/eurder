@@ -1,19 +1,36 @@
 package com.switchfully.eurder.items;
 
+import com.switchfully.eurder.exceptions.InvalidAmountException;
+import com.switchfully.eurder.exceptions.InvalidItemNameException;
+import com.switchfully.eurder.exceptions.InvalidPriceException;
+
 import java.util.Objects;
 
 public class Item {
 
     private String name;
-    private double price;
-    private int amount;
+    private Double price;
+    private Integer amount;
     private String description;
 
-    public Item(String name, double price, int amount, String description) {
+    public Item(String name, Double price, Integer amount, String description) {
+        validateInput(name, price, amount);
         this.name = name;
         this.price = price;
         this.amount = amount;
         this.description = description;
+    }
+
+    private void validateInput(String name, Double price, Integer amount){
+        if(name == null || name.isEmpty()){
+            throw new InvalidItemNameException();
+        }
+        if(price == null || price < 0){
+            throw new InvalidPriceException();
+        }
+        if(amount == null || amount < 0){
+            throw new InvalidAmountException();
+        }
     }
 
     public String getName() {
@@ -24,7 +41,7 @@ public class Item {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -32,7 +49,7 @@ public class Item {
         this.price = price;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
@@ -53,7 +70,7 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return Double.compare(price, item.price) == 0 && amount == item.amount && Objects.equals(name, item.name) && Objects.equals(description, item.description);
+        return Objects.equals(name, item.name) && Objects.equals(price, item.price) && Objects.equals(amount, item.amount) && Objects.equals(description, item.description);
     }
 
     @Override

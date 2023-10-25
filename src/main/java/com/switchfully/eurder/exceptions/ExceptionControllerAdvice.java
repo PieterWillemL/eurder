@@ -12,7 +12,7 @@ public class ExceptionControllerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
-    @ExceptionHandler({EmailAlreadyInDatabaseException.class, ItemAlreadyInDatabaseException.class, ItemNotInDatabaseException.class})
+    @ExceptionHandler({EmailAlreadyInDatabaseException.class, ItemAlreadyInDatabaseException.class, ItemNotInDatabaseException.class, InvalidItemNameException.class, InvalidPriceException.class, InvalidAmountException.class})
     public ResponseEntity<String> BadRequestExceptionHandler(Exception exception){
         logger.warn(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());

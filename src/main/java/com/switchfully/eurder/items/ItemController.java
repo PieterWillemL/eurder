@@ -26,5 +26,12 @@ public class ItemController {
         return itemService.addNewItem(itemDto);
     }
 
+    @PutMapping("{itemName}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ItemDto updateItem(@RequestHeader String authorization, @PathVariable String itemName, @RequestBody ItemDto itemDto){
+        securityService.validateAuthorization(authorization, Role.ADMIN);
+        return itemService.updateItem(itemName, itemDto);
+    }
+
 
 }

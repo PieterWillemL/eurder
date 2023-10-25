@@ -5,11 +5,11 @@ import java.util.Objects;
 public class ItemDto {
 
     private final String name;
-    private final double price;
-    private final int amount;
+    private final Double price;
+    private final Integer amount;
     private final String description;
 
-    public ItemDto(String name, double price, int amount, String description) {
+    public ItemDto(String name, Double price, Integer amount, String description) {
         this.name = name;
         this.price = price;
         this.amount = amount;
@@ -20,11 +20,11 @@ public class ItemDto {
         return name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
@@ -37,7 +37,7 @@ public class ItemDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemDto itemDto = (ItemDto) o;
-        return Double.compare(price, itemDto.price) == 0 && amount == itemDto.amount && Objects.equals(name, itemDto.name) && Objects.equals(description, itemDto.description);
+        return Objects.equals(name, itemDto.name) && Objects.equals(price, itemDto.price) && Objects.equals(amount, itemDto.amount) && Objects.equals(description, itemDto.description);
     }
 
     @Override
@@ -45,3 +45,4 @@ public class ItemDto {
         return Objects.hash(name, price, amount, description);
     }
 }
+
