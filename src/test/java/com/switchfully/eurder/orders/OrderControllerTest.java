@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 @WebMvcTest(OrderController.class)
@@ -93,5 +94,21 @@ public class OrderControllerTest {
                 .header(authorization, ""))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(orderDtoString));
+    }
+
+    @Test
+    void getItemsShippingToday_givenValidAuthorization_thenReturnsHttpStatusOkAndCorrectReturnType() throws Exception{
+        HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress = new HashMap<>();
+        itemsByAddress.put("address", List.of(new ItemGroupDtoForShippingToday("itemName", 5)));
+        ShippingTodayDto shippingTodayDto = new ShippingTodayDto(itemsByAddress);
+        String shippingTodayDtoString = objectMapper.writeValueAsString(shippingTodayDto);
+
+        Mockito.when(orderService.getItemsShippingToday())
+                .thenReturn(shippingTodayDto);
+
+        mockMvc.perform(get("http://localhost:8080/eurder/orders/shipping-today")
+                .header(authorization, ""))
+                .andExpect(status().isOk())
+                .andExpect(content().json(shippingTodayDtoString));
     }
 }

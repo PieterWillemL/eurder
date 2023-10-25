@@ -38,6 +38,7 @@ public class OrderService {
                 .map(this::setCurrentUnitPrice)
                 .toList();
         Order placedOrder = orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customerEmail));
+        itemService.updateAmounts(orderMapper.mapToOrder(itemGroupList, customerEmail));
         placedOrder.setTotalPrice(calculateTotalPriceOfOneOrder(placedOrder));
         return orderMapper.mapToOrderDto(placedOrder);
     }
