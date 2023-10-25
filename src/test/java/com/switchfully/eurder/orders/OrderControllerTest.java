@@ -47,7 +47,7 @@ public class OrderControllerTest {
         newItemGroupDto1 = new NewItemGroupDto("Wooden Desk", 1);
         newItemGroupDto2 = new NewItemGroupDto("Coffee Mug", 25);
         newItemGroupDtoListString = objectMapper.writeValueAsString(List.of(newItemGroupDto1, newItemGroupDto2));
-        orderDto = new OrderDto("mockId", new Customer("a", "b", "c", "d", "e", "password"), null, 120.5);
+        orderDto = new OrderDto("mockId", "mockCustomerEmail", null, 120.5);
         orderDtoString = objectMapper.writeValueAsString(orderDto);
 
     }

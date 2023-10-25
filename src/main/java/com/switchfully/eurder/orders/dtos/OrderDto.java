@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class OrderDto {
 
-    private String id;
-    private Customer customer;
-    private List<ItemGroupDto> itemGroupDtoList;
-    private double totalPrice;
+    private final String id;
+    private final String customerEmail;
+    private final List<ItemGroupDto> itemGroupDtoList;
+    private final double totalPrice;
 
-    public OrderDto(String id, Customer customer, List<ItemGroupDto> itemGroupDtoList, double totalPrice) {
+    public OrderDto(String id, String customerEmail, List<ItemGroupDto> itemGroupDtoList, double totalPrice) {
         this.id = id;
-        this.customer = customer;
+        this.customerEmail = customerEmail;
         this.itemGroupDtoList = itemGroupDtoList;
         this.totalPrice = totalPrice;
     }
@@ -23,8 +23,8 @@ public class OrderDto {
         return id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public List<ItemGroupDto> getItemGroupDtoList() {
@@ -40,11 +40,11 @@ public class OrderDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderDto orderDto = (OrderDto) o;
-        return Double.compare(totalPrice, orderDto.totalPrice) == 0 && Objects.equals(id, orderDto.id) && Objects.equals(customer, orderDto.customer) && Objects.equals(itemGroupDtoList, orderDto.itemGroupDtoList);
+        return Double.compare(totalPrice, orderDto.totalPrice) == 0 && Objects.equals(id, orderDto.id) && Objects.equals(customerEmail, orderDto.customerEmail) && Objects.equals(itemGroupDtoList, orderDto.itemGroupDtoList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customer, itemGroupDtoList, totalPrice);
+        return Objects.hash(id, customerEmail, itemGroupDtoList, totalPrice);
     }
 }

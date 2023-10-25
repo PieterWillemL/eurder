@@ -29,13 +29,13 @@ public class OrderService {
     }
 
     public OrderDto placeNewOrder(List<NewItemGroupDto> newItemGroupDtoList, String customerEmail) {
-        Customer customer = customerService.getCustomerByEmail(customerEmail);
+        customerService.getCustomerByEmail(customerEmail);
         List<ItemGroup> itemGroupList = newItemGroupDtoList.stream()
                 .map(orderMapper::mapToItemGroupBeforeCalculatingShippingDateAndSettingUnitPrice)
                 .map(this::calculateShippingDate)
                 .map(this::setCurrentUnitPrice)
                 .toList();
-        Order placedOrder = orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customer));
+        Order placedOrder = orderRepository.placeNewOrder(orderMapper.mapToOrder(itemGroupList, customerEmail));
         placedOrder.setTotalPrice(calculateTotalPrice(placedOrder));
         return orderMapper.mapToOrderDto(placedOrder);
     }

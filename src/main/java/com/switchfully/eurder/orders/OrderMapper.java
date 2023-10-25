@@ -10,8 +10,8 @@ import java.util.List;
 
 @Component
 public class OrderMapper {
-    public Order mapToOrder(List<ItemGroup> itemGroupList, Customer customer)  {
-        return new Order(customer, itemGroupList);
+    public Order mapToOrder(List<ItemGroup> itemGroupList, String customerEmail)  {
+        return new Order(customerEmail, itemGroupList);
     }
 
     public ItemGroup mapToItemGroupBeforeCalculatingShippingDateAndSettingUnitPrice(NewItemGroupDto newItemGroupDto) {
@@ -26,7 +26,7 @@ public class OrderMapper {
                 .stream()
                 .map(this::mapToItemGroupDto)
                 .toList();
-        return new OrderDto(order.getOrderId(), order.getCustomer(), itemGroupDtoList, order.getTotalPrice());
+        return new OrderDto(order.getOrderId(), order.getCustomerEmail(), itemGroupDtoList, order.getTotalPrice());
 
     }
 

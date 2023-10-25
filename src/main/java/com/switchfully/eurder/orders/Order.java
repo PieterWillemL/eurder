@@ -9,13 +9,13 @@ import java.util.UUID;
 public class Order {
 
     private final String orderId;
-    private final Customer customer;
+    private final String customerEmail;
     private final List<ItemGroup> itemGroupList;
     private double totalPrice;
 
-    public Order(Customer customer, List<ItemGroup> itemGroupList) {
+    public Order(String customerEmail, List<ItemGroup> itemGroupList) {
         orderId = UUID.randomUUID().toString();
-        this.customer = customer;
+        this.customerEmail = customerEmail;
         this.itemGroupList = itemGroupList;
     }
 
@@ -23,8 +23,8 @@ public class Order {
         return orderId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public List<ItemGroup> getItemGroupList() {
@@ -44,11 +44,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(orderId, order.orderId) && Objects.equals(customer, order.customer) && Objects.equals(itemGroupList, order.itemGroupList);
+        return Objects.equals(orderId, order.orderId) && Objects.equals(customerEmail, order.customerEmail) && Objects.equals(itemGroupList, order.itemGroupList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, customer, itemGroupList);
+        return Objects.hash(orderId, customerEmail, itemGroupList);
     }
 }
