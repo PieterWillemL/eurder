@@ -4,6 +4,8 @@ import com.switchfully.eurder.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.customers.dtos.CustomerDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -21,5 +23,11 @@ public class CustomerService {
 
     public CustomerDto createCustomerAccount(CreateCustomerDto createCustomerDto) {
         return customerMapper.mapToCustomerDto(customerRepository.createCustomerAccount(customerMapper.mapToCustomer(createCustomerDto)));
+    }
+
+    public List<CustomerDto> getAllCustomers() {
+        return customerRepository.getCustomers().values().stream()
+                .map(customerMapper::mapToCustomerDto)
+                .toList();
     }
 }
