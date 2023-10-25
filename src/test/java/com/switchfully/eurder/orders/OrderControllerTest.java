@@ -1,8 +1,6 @@
 package com.switchfully.eurder.orders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.switchfully.eurder.customers.Customer;
-import com.switchfully.eurder.items.dtos.ItemDto;
 import com.switchfully.eurder.orders.dtos.*;
 import com.switchfully.eurder.security.SecurityService;
 import com.switchfully.eurder.security.UsernamePassword;
@@ -98,15 +96,15 @@ public class OrderControllerTest {
 
     @Test
     void getItemsShippingToday_givenValidAuthorization_thenReturnsHttpStatusOkAndCorrectReturnType() throws Exception{
-        HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress = new HashMap<>();
-        itemsByAddress.put("address", List.of(new ItemGroupDtoForShippingToday("itemName", 5)));
-        ShippingTodayDto shippingTodayDto = new ShippingTodayDto(itemsByAddress);
-        String shippingTodayDtoString = objectMapper.writeValueAsString(shippingTodayDto);
+        HashMap<String, List<ItemGroupDtoForShippingInNumberOfDays>> itemsByAddress = new HashMap<>();
+        itemsByAddress.put("address", List.of(new ItemGroupDtoForShippingInNumberOfDays("itemName", 5)));
+        ShippingInNumberOfDaysDto shippingInNumberOfDaysDto = new ShippingInNumberOfDaysDto(itemsByAddress);
+        String shippingTodayDtoString = objectMapper.writeValueAsString(shippingInNumberOfDaysDto);
 
-        Mockito.when(orderService.getItemsShippingToday())
-                .thenReturn(shippingTodayDto);
+        Mockito.when(orderService.getItemsShippingInNumberOfDays(0))
+                .thenReturn(shippingInNumberOfDaysDto);
 
-        mockMvc.perform(get("http://localhost:8080/eurder/orders/shipping-today")
+        mockMvc.perform(get("http://localhost:8080/eurder/orders/days-till-shipping/0")
                 .header(authorization, ""))
                 .andExpect(status().isOk())
                 .andExpect(content().json(shippingTodayDtoString));

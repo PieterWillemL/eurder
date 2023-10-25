@@ -26,16 +26,15 @@ public class OrderRepository {
         return orders.get(orderId);
     }
 
-    public List<Order> getAllOrdersThatContainAnItemToShipToday() {
+    public List<Order> getAllOrdersThatContainAnItemToShipInNumberOfDays(Integer numberOfDays) {
         return orders.values().stream()
-                .filter(this::orderContainsItemToShipToday)
+                .filter(order -> orderContainsItemToShipInNumberOfDays(order, numberOfDays))
                 .toList();
     }
 
-    private boolean orderContainsItemToShipToday(Order order) {
+    private boolean orderContainsItemToShipInNumberOfDays(Order order, Integer numberOfDays) {
         return order.getItemGroupList().stream()
                 .map(ItemGroup::getShippingDate)
-                .anyMatch(shippingDate -> shippingDate.equals(LocalDate.now()));
-
+                .anyMatch(shippingDate -> shippingDate.equals(LocalDate.now().plusDays(numberOfDays)));
     }
 }

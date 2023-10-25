@@ -7,7 +7,7 @@ import com.switchfully.eurder.items.ItemService;
 import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.dtos.OrderReportDto;
-import com.switchfully.eurder.orders.dtos.ShippingTodayDto;
+import com.switchfully.eurder.orders.dtos.ShippingInNumberOfDaysDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -89,8 +89,8 @@ public class OrderService {
         }
     }
 
-    public ShippingTodayDto getItemsShippingToday() {
-        List<Order> ordersWithItemToShipToday = orderRepository.getAllOrdersThatContainAnItemToShipToday();
-        return orderMapper.mapToShippingTodayDto(ordersWithItemToShipToday, customerService);
+    public ShippingInNumberOfDaysDto getItemsShippingInNumberOfDays(Integer numberOfDays) {
+        List<Order> ordersWithItemToShipInNumberOfDays = orderRepository.getAllOrdersThatContainAnItemToShipInNumberOfDays(numberOfDays);
+        return orderMapper.mapToShippingInNumberOfDaysDto(ordersWithItemToShipInNumberOfDays, customerService, numberOfDays);
     }
 }

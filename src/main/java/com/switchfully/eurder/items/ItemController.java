@@ -6,6 +6,8 @@ import com.switchfully.eurder.security.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("eurder/items")
 public class ItemController {
@@ -33,5 +35,9 @@ public class ItemController {
         return itemService.updateItem(itemName, itemDto);
     }
 
-
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<ItemDto> getAllItems(){
+        return itemService.getAllItems();
+    }
 }

@@ -2,12 +2,12 @@ package com.switchfully.eurder.orders.dtos;
 
 import java.util.Objects;
 
-public class ItemGroupDtoForShippingToday {
+public class ItemGroupDtoForShippingInNumberOfDays {
 
     private String name;
     private Integer amount;
 
-    public ItemGroupDtoForShippingToday(String name, Integer amount) {
+    public ItemGroupDtoForShippingInNumberOfDays(String name, Integer amount) {
         this.name = name;
         this.amount = amount;
     }
@@ -24,7 +24,7 @@ public class ItemGroupDtoForShippingToday {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemGroupDtoForShippingToday that = (ItemGroupDtoForShippingToday) o;
+        ItemGroupDtoForShippingInNumberOfDays that = (ItemGroupDtoForShippingInNumberOfDays) o;
         return Objects.equals(name, that.name) && Objects.equals(amount, that.amount);
     }
 

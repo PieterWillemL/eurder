@@ -3,7 +3,7 @@ package com.switchfully.eurder.orders;
 import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.dtos.OrderReportDto;
-import com.switchfully.eurder.orders.dtos.ShippingTodayDto;
+import com.switchfully.eurder.orders.dtos.ShippingInNumberOfDaysDto;
 import com.switchfully.eurder.security.Role;
 import com.switchfully.eurder.security.SecurityService;
 import org.springframework.http.HttpStatus;
@@ -48,10 +48,10 @@ public class OrderController {
         return orderService.reorderExistingOrder(customerEmail, orderId);
     }
 
-    @GetMapping("shipping-today")
+    @GetMapping("days-till-shipping/{numberOfDays}")
     @ResponseStatus(HttpStatus.OK)
-    public ShippingTodayDto getItemsShippingToday(@RequestHeader String authorization){
+    public ShippingInNumberOfDaysDto getItemsShippingInNumberOfDays(@RequestHeader String authorization, @PathVariable Integer numberOfDays){
         securityService.validateAuthorization(authorization, Role.ADMIN);
-        return orderService.getItemsShippingToday();
+        return orderService.getItemsShippingInNumberOfDays(numberOfDays);
     }
 }

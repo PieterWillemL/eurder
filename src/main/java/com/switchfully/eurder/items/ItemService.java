@@ -4,6 +4,8 @@ import com.switchfully.eurder.items.dtos.ItemDto;
 import com.switchfully.eurder.orders.Order;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ItemService {
 
@@ -36,5 +38,11 @@ public class ItemService {
 
     public void updateAmounts(Order order){
         itemRepository.updateAmounts(order);
+    }
+
+    public List<ItemDto> getAllItems() {
+        return itemRepository.getItems().values().stream()
+                .map(itemMapper::mapToItemDto)
+                .toList();
     }
 }

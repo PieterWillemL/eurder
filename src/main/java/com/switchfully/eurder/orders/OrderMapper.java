@@ -1,6 +1,5 @@
 package com.switchfully.eurder.orders;
 
-import com.switchfully.eurder.customers.Customer;
 import com.switchfully.eurder.customers.CustomerService;
 import com.switchfully.eurder.orders.dtos.*;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,11 @@ import java.util.List;
 
 @Component
 public class OrderMapper {
-    public Order mapToOrder(List<ItemGroup> itemGroupList, String customerEmail)  {
+    private static String getAddress(CustomerService customerService, Order order) {
+        return customerService.getCustomerByEmail(order.getCustomerEmail()).getAddress();
+    }
+
+    public Order mapToOrder(List<ItemGroup> itemGroupList, String customerEmail) {
         return new Order(customerEmail, itemGroupList);
     }
 
@@ -19,11 +22,11 @@ public class OrderMapper {
         return new ItemGroup(
                 newItemGroupDto.getItemName(),
                 newItemGroupDto.getAmount(),
-                0,null);
+                0, null);
     }
 
-    public OrderDto mapToOrderDto(Order order){
-        List<ItemGroupDto> itemGroupDtoList= order.getItemGroupList()
+    public OrderDto mapToOrderDto(Order order) {
+        List<ItemGroupDto> itemGroupDtoList = order.getItemGroupList()
                 .stream()
                 .map(this::mapToItemGroupDto)
                 .toList();
@@ -31,18 +34,18 @@ public class OrderMapper {
 
     }
 
-    public ItemGroupDto mapToItemGroupDto(ItemGroup itemGroup){
+    public ItemGroupDto mapToItemGroupDto(ItemGroup itemGroup) {
         return new ItemGroupDto(itemGroup.getItemName(), itemGroup.getAmount(), itemGroup.getPricePerUnit(), itemGroup.getShippingDate());
     }
 
-    public OrderReportDto mapToOrderReportDto(List<Order> orders, Double totalPrice){
+    public OrderReportDto mapToOrderReportDto(List<Order> orders, Double totalPrice) {
         List<SingleOrderForReportDto> singleOrderForReportDtoList = orders.stream()
                 .map(this::mapToSingleOrderForReportDto)
                 .toList();
         return new OrderReportDto(singleOrderForReportDtoList, totalPrice);
     }
 
-    public SingleOrderForReportDto mapToSingleOrderForReportDto(Order order){
+    public SingleOrderForReportDto mapToSingleOrderForReportDto(Order order) {
         List<ItemGroupForOrderReportDto> itemGroupForOrderReportDtoList = order.getItemGroupList().stream()
                 .map(this::mapToItemGroupForOrderReportDto)
                 .toList();
@@ -52,42 +55,39 @@ public class OrderMapper {
         return new SingleOrderForReportDto(order.getOrderId(), itemGroupForOrderReportDtoList, totalPrice);
     }
 
-    public ItemGroupForOrderReportDto mapToItemGroupForOrderReportDto(ItemGroup itemGroup){
-        return new ItemGroupForOrderReportDto(itemGroup.getItemName(), itemGroup.getAmount(), itemGroup.getPricePerUnit()* itemGroup.getAmount());
+    public ItemGroupForOrderReportDto mapToItemGroupForOrderReportDto(ItemGroup itemGroup) {
+        return new ItemGroupForOrderReportDto(itemGroup.getItemName(), itemGroup.getAmount(), itemGroup.getPricePerUnit() * itemGroup.getAmount());
     }
 
     public NewItemGroupDto mapToNewItemGroupDto(ItemGroup itemGroup) {
         return new NewItemGroupDto(itemGroup.getItemName(), itemGroup.getAmount());
     }
 
-    public ShippingTodayDto mapToShippingTodayDto(List<Order> ordersWithItemToShipToday, CustomerService customerService) {
-        HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress = new HashMap<>();
-        ordersWithItemToShipToday.stream()
-                .map(order -> itemsByAddress.containsKey(getAddress(customerService, order))?
-                        itemsByAddress.put(getAddress(customerService, order), appendList(itemsByAddress, customerService, order)):
-                        itemsByAddress.put(getAddress(customerService, order), getItemGroupDtoForShippingTodayList(order))
-                        );
-        return new ShippingTodayDto(itemsByAddress);
+    public ShippingInNumberOfDaysDto mapToShippingInNumberOfDaysDto(List<Order> ordersWithItemToShipInNumberOfDays, CustomerService customerService, Integer numberOfDays) {
+        HashMap<String, List<ItemGroupDtoForShippingInNumberOfDays>> itemsByAddress = new HashMap<>();
+        ordersWithItemToShipInNumberOfDays
+                .stream().map(order -> itemsByAddress.containsKey(getAddress(customerService, order)) ?
+                        itemsByAddress.put(getAddress(customerService, order), appendList(itemsByAddress, customerService, order, numberOfDays)) :
+                        itemsByAddress.put(getAddress(customerService, order), getItemGroupDtoForShippingTodayList(order, numberOfDays))
+                );
+
+        return new ShippingInNumberOfDaysDto(itemsByAddress);
     }
 
-    private List<ItemGroupDtoForShippingToday> appendList(HashMap<String, List<ItemGroupDtoForShippingToday>> itemsByAddress, CustomerService customerService, Order order){
-        List<ItemGroupDtoForShippingToday> listToReturn = itemsByAddress.get(getAddress(customerService, order));
-        listToReturn.addAll(getItemGroupDtoForShippingTodayList(order));
+    private List<ItemGroupDtoForShippingInNumberOfDays> appendList(HashMap<String, List<ItemGroupDtoForShippingInNumberOfDays>> itemsByAddress, CustomerService customerService, Order order, Integer numberOfDays) {
+        List<ItemGroupDtoForShippingInNumberOfDays> listToReturn = itemsByAddress.get(getAddress(customerService, order));
+        listToReturn.addAll(getItemGroupDtoForShippingTodayList(order, numberOfDays));
         return listToReturn;
     }
 
-    private static String getAddress(CustomerService customerService, Order order) {
-        return customerService.getCustomerByEmail(order.getCustomerEmail()).getAddress();
-    }
-
-    private List<ItemGroupDtoForShippingToday> getItemGroupDtoForShippingTodayList(Order order){
+    private List<ItemGroupDtoForShippingInNumberOfDays> getItemGroupDtoForShippingTodayList(Order order, Integer numberOfDays) {
         return order.getItemGroupList().stream()
-                .filter(itemGroup -> itemGroup.getShippingDate().equals(LocalDate.now()))
-                .map(this::mapToItemGroupDtoForShippingToday)
+                .filter(itemGroup -> itemGroup.getShippingDate().equals(LocalDate.now().plusDays(numberOfDays)))
+                .map(this::mapToItemGroupDtoForShippingInNumberOfDays)
                 .toList();
     }
 
-    public ItemGroupDtoForShippingToday mapToItemGroupDtoForShippingToday(ItemGroup itemGroup){
-        return new ItemGroupDtoForShippingToday(itemGroup.getItemName(), itemGroup.getAmount());
+    public ItemGroupDtoForShippingInNumberOfDays mapToItemGroupDtoForShippingInNumberOfDays(ItemGroup itemGroup) {
+        return new ItemGroupDtoForShippingInNumberOfDays(itemGroup.getItemName(), itemGroup.getAmount());
     }
 }
